@@ -40,12 +40,15 @@ export function useLanguage() {
 }
 
 export function LanguageSwitcher() {
-  const { toggleLanguage, copy } = useLanguage()
+  const { language, toggleLanguage, copy } = useLanguage()
+  const nextLanguage = language === 'es' ? 'English' : 'Español'
+
   return (
     <button
       type="button"
       onClick={toggleLanguage}
-      aria-label={`Cambiar idioma a ${copy.toggle}`}
+      aria-label={`Cambiar idioma a ${nextLanguage}`}
+      title={`Cambiar idioma a ${nextLanguage}`}
       className="flex items-center gap-2 rounded-md border border-input bg-card px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
       <Languages className="size-4" aria-hidden="true" />
@@ -58,7 +61,7 @@ export function CoffeeButton() {
   const { copy } = useLanguage()
   return (
     <a
-      href="https://www.buymeacoffee.com/"
+      href="https://buymeacoffee.com/bermartosy"
       target="_blank"
       rel="noreferrer"
       className="flex items-center gap-2 rounded-md border border-primary/40 bg-accent px-3 py-2 text-sm font-medium text-accent-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
