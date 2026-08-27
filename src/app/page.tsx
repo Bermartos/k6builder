@@ -9,6 +9,7 @@ import { ScriptPreview } from '@/components/script-preview'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CoffeeButton, LanguageSwitcher, useLanguage } from '@/components/language-switcher'
 import { generateK6Script, type BuilderConfig } from '@/lib/generate-k6-script'
+import { parseCurl } from '@/lib/curl'
 import { parsePostman, type ParsedCollection } from '@/lib/postman'
 
 export default function Page() {
@@ -59,18 +60,21 @@ export default function Page() {
       return
     }
 
-    if (config.source !== 'postman') {
-      setCollection(null)
-      setError(
-        `El análisis automático está disponible para colecciones de Postman. Con "${config.source}" se usará la colección de ejemplo.`,
-      )
-      setHasGenerated(true)
-      return
-    }
-
     try {
-      const json = JSON.parse(payload.content)
-      const parsed = parsePostman(json)
+      const parsed = config.source === 'curl'
+        ? parseCurl(payload.content)
+        : config.source === 'postman'
+          ? parsePostman(JSON.parse(payload.content))
+          : null
+
+      if (!parsed) {
+        setCollection(null)
+        setError(
+          `El análisis automático está disponible para Postman y cURL. Con "${config.source}" se usará la colección de ejemplo.`,
+        )
+        setHasGenerated(true)
+        return
+      }
       setCollection(parsed)
       setError(null)
       setHasGenerated(true)
