@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { AlertCircle, FileJson, Upload, X } from 'lucide-react'
+import { AlertCircle, ClipboardPaste, FileJson, Upload, X } from 'lucide-react'
 import type { SourceType } from '@/lib/generate-k6-script'
 
 const TABS: { id: SourceType; label: string; accept: string; note: string }[] = [
@@ -25,6 +25,7 @@ export function SourcePanel({
   error?: string | null
 }) {
   const [dragging, setDragging] = useState(false)
+  const [curlText, setCurlText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const active = TABS.find((t) => t.id === source) ?? TABS[0]
 
@@ -40,7 +41,9 @@ export function SourcePanel({
 
     const reader = new FileReader()
     reader.onload = () => {
-      onFileChange({ name: file.name, content: String(reader.result ?? '') })
+      const content = String(reader.result ?? '')
+      if (source === 'curl') setCurlText(content)
+      onFileChange({ name: file.name, content })
     }
     reader.onerror = () => {
       console.log('[v0] FileReader error:', reader.error)
@@ -77,7 +80,7 @@ export function SourcePanel({
         })}
       </div>
 
-      {fileName ? (
+      {fileName && source !== 'curl' ? (
         <div className="flex items-center gap-3 rounded-lg border border-border bg-muted/60 px-4 py-4">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-accent text-accent-foreground">
             <FileJson className="size-4" aria-hidden="true" />
@@ -126,11 +129,40 @@ export function SourcePanel({
               e.target.value = ''
             }}
           />
-          <Upload className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
-          <p className="mt-3 text-sm text-pretty">
-            Arrastra tu archivo <span className="font-mono">{active.accept}</span> aquí
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">Máx. 10 MB · {active.note}</p>
+          {source === 'curl' ? (
+            <div className="mx-auto flex max-w-2xl flex-col gap-3 text-left">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <ClipboardPaste className="size-4 text-primary" aria-hidden="true" />
+                <label htmlFor="curl-input">Pega tu comando cURL</label>
+              </div>
+              <textarea
+                id="curl-input"
+                value={curlText}
+                onChange={(e) => {
+                  const content = e.target.value
+                  setCurlText(content)
+                  if (content.trim()) {
+                    onFileChange({ name: 'comando-curl.txt', content })
+                  } else {
+                    onFileChange(null)
+                  }
+                }}
+                placeholder={'curl --request GET \\\n  --url https://api.example.com/items'}
+                rows={5}
+                spellCheck={false}
+                className="w-full resize-y rounded-md border border-input bg-card px-3 py-2 font-mono text-xs leading-relaxed outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
+              />
+              <p className="text-xs text-muted-foreground">Pega uno o varios comandos, o arrastra/sube un archivo .txt o .sh.</p>
+            </div>
+          ) : (
+            <>
+              <Upload className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
+              <p className="mt-3 text-sm text-pretty">
+                Arrastra tu archivo <span className="font-mono">{active.accept}</span> aquí
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">Máx. 10 MB · {active.note}</p>
+            </> 
+          )}
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
