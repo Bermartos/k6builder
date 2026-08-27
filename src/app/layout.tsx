@@ -10,7 +10,7 @@ const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrai
 export const metadata: Metadata = {
     title: 'k6 Script Builder — Load testing scripts in seconds',
   description:
-    'Convierte colecciones de Postman, especificaciones Swagger, archivos HAR o comandos cURL en scripts de prueba de rendimiento k6 listos para ejecutar.',
+    'Convierte colecciones de Postman o comandos cURL en scripts de prueba de rendimiento k6 listos para ejecutar.',
   generator: 'v0.app',
   icons: {
     icon: [

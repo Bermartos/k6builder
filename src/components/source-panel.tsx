@@ -6,8 +6,6 @@ import type { SourceType } from '@/lib/generate-k6-script'
 
 const TABS: { id: SourceType; label: string; accept: string; note: string }[] = [
   { id: 'postman', label: 'Postman', accept: '.json', note: 'collection.json v2.1' },
-  { id: 'swagger', label: 'Swagger', accept: '.json,.yaml,.yml', note: 'OpenAPI 3.x' },
-  { id: 'har', label: 'HAR', accept: '.har,.json', note: 'captura del navegador' },
   { id: 'curl', label: 'cURL', accept: '.txt,.sh', note: 'comandos sin procesar' },
 ]
 
@@ -57,7 +55,7 @@ export function SourcePanel({
       <div
         role="tablist"
         aria-label="Tipo de archivo de origen"
-        className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1 sm:grid-cols-4"
+        className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1"
       >
         {TABS.map((tab) => {
           const selected = tab.id === source

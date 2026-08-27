@@ -1,6 +1,6 @@
 import { SAMPLE_COLLECTION, type ParsedCollection } from '@/lib/postman'
 
-export type SourceType = 'postman' | 'swagger' | 'har' | 'curl'
+export type SourceType = 'postman' | 'curl'
 
 export type BuilderConfig = {
   source: SourceType
@@ -15,8 +15,6 @@ export type BuilderConfig = {
 
 const SOURCE_LABEL: Record<SourceType, string> = {
   postman: 'Postman Collection',
-  swagger: 'Swagger / OpenAPI',
-  har: 'HAR (network capture)',
   curl: 'comando cURL',
 }
 

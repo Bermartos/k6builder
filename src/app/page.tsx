@@ -103,7 +103,7 @@ export default function Page() {
             {isSpanish ? 'De tu colección de APIs a una prueba de carga ejecutable' : 'From your API collection to an executable load test'}
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
-            {isSpanish ? 'Importa Postman, Swagger, HAR o cURL, define el perfil de carga y obtén un script de k6 listo para' : 'Import Postman, Swagger, HAR, or cURL, define the load profile, and get a k6 script ready for'}
+            {isSpanish ? 'Importa Postman o cURL, define el perfil de carga y obtén un script de k6 listo para' : 'Import Postman or cURL, define the load profile, and get a k6 script ready for'}
             <span className="font-mono"> k6 run load-test.js</span>.
           </p>
         </div>
