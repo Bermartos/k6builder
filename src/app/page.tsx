@@ -7,10 +7,14 @@ import { SourcePanel } from '@/components/source-panel'
 import { SettingsPanel } from '@/components/settings-panel'
 import { ScriptPreview } from '@/components/script-preview'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { CoffeeButton, LanguageSwitcher, useLanguage } from '@/components/language-switcher'
 import { generateK6Script, type BuilderConfig } from '@/lib/generate-k6-script'
 import { parsePostman, type ParsedCollection } from '@/lib/postman'
 
 export default function Page() {
+  const { language } = useLanguage()
+  const isSpanish = language === 'es'
+
   const [config, setConfig] = useState<BuilderConfig>({
     source: 'postman',
     fileName: null,
@@ -27,6 +31,10 @@ export default function Page() {
   const [hasGenerated, setHasGenerated] = useState(false)
 
   const patch = (next: Partial<BuilderConfig>) => setConfig((prev) => ({ ...prev, ...next }))
+
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
 
   // Regenera en vivo una vez que existe un primer script (al cambiar cualquier ajuste).
   useEffect(() => {
@@ -88,18 +96,22 @@ export default function Page() {
             k6 Script Builder
           </span>
           <h1 className="text-3xl font-semibold tracking-tight text-balance md:text-4xl">
-            De tu colección de APIs a una prueba de carga ejecutable
+            {isSpanish ? 'De tu colección de APIs a una prueba de carga ejecutable' : 'From your API collection to an executable load test'}
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
-            Importa Postman, Swagger, HAR o cURL, define el perfil de carga y obtén un script de k6 listo para
+            {isSpanish ? 'Importa Postman, Swagger, HAR o cURL, define el perfil de carga y obtén un script de k6 listo para' : 'Import Postman, Swagger, HAR, or cURL, define the load profile, and get a k6 script ready for'}
             <span className="font-mono"> k6 run load-test.js</span>.
           </p>
         </div>
-        <ThemeToggle />
+        <div className="flex shrink-0 items-center gap-2">
+          <CoffeeButton />
+          <LanguageSwitcher />
+          <ThemeToggle />
+        </div>
       </header>
 
       <div className="flex flex-col gap-6">
-        <SectionShell step="01" title="Origen" hint="Elige el formato e importa el archivo">
+        <SectionShell step="01" title={isSpanish ? 'Origen' : 'Source'} hint={isSpanish ? 'Elige el formato e importa el archivo' : 'Choose a format and import your file'}>
           <SourcePanel
             source={config.source}
             onSourceChange={(source) => patch({ source })}
@@ -109,11 +121,11 @@ export default function Page() {
           />
         </SectionShell>
 
-        <SectionShell step="02" title="Perfil de carga" hint="Concurrencia, tiempos y opciones del script">
+        <SectionShell step="02" title={isSpanish ? 'Perfil de carga' : 'Load profile'} hint={isSpanish ? 'Concurrencia, tiempos y opciones del script' : 'Concurrency, timing, and script options'}>
           <SettingsPanel config={config} onChange={patch} />
         </SectionShell>
 
-        <SectionShell step="03" title="Script" hint="Genera, revisa y exporta">
+        <SectionShell step="03" title={isSpanish ? 'Script' : 'Script'} hint={isSpanish ? 'Genera, revisa y exporta' : 'Generate, review, and export'}>
           <ScriptPreview script={script} disabled={false} onGenerate={handleGenerate} />
         </SectionShell>
 
