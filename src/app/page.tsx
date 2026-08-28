@@ -8,6 +8,7 @@ import { SettingsPanel } from '@/components/settings-panel'
 import { ScriptPreview } from '@/components/script-preview'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CoffeeButton, LanguageSwitcher, useLanguage } from '@/components/language-switcher'
+import { SiteFooter } from '@/components/site-footer'
 import { generateK6Script, type BuilderConfig } from '@/lib/generate-k6-script'
 import { parseCurl } from '@/lib/curl'
 import { parsePostman, type ParsedCollection } from '@/lib/postman'
@@ -92,9 +93,10 @@ export default function Page() {
   const requestCount = collection?.requests.length ?? 0
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 md:px-8 md:py-12 lg:px-12">
-      <header className="flex items-start justify-between gap-4 pb-2">
-        <div className="flex flex-col gap-3">
+    <div className="flex min-h-screen flex-col">
+    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-8 md:px-8 md:py-12 lg:px-12">
+      <header className="flex flex-col gap-4 pb-2 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 flex flex-col gap-3">
           <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-primary">
             <Activity className="size-4" aria-hidden="true" />
             k6 Script Builder
@@ -107,7 +109,7 @@ export default function Page() {
             <span className="font-mono"> k6 run load-test.js</span>.
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex w-full items-center gap-2 sm:w-auto sm:justify-end">
           <CoffeeButton />
           <LanguageSwitcher />
           <ThemeToggle />
@@ -140,5 +142,7 @@ export default function Page() {
         </p>
       </div>
     </main>
+    <SiteFooter />
+    </div>
   )
 }
