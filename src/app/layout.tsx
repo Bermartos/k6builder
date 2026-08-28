@@ -1,5 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
@@ -55,6 +56,11 @@ export default function RootLayout({
           {children}
         </ThemeProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
+        <Script
+          type="module"
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token":"abe9416da75e4d75aac8e6a65ea14f67"}'
+        />
       </body>
     </html>
   )
