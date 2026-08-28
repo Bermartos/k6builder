@@ -49,7 +49,7 @@ export function LanguageSwitcher() {
       onClick={toggleLanguage}
       aria-label={`Cambiar idioma a ${nextLanguage}`}
       title={`Cambiar idioma a ${nextLanguage}`}
-      className="flex items-center gap-2 rounded-md border border-input bg-card px-3 py-2 font-mono text-xs uppercase tracking-wider transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      className="flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-input bg-card px-3 py-2 font-mono text-[11px] uppercase tracking-wider transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:min-h-10 sm:flex-none sm:px-3 sm:text-xs"
     >
       <Languages className="size-4" aria-hidden="true" />
       {copy.toggle}
@@ -64,7 +64,7 @@ export function CoffeeButton() {
       href="https://buymeacoffee.com/bermartosy"
       target="_blank"
       rel="noreferrer"
-      className="flex items-center gap-2 rounded-md border border-primary/40 bg-accent px-3 py-2 text-sm font-medium text-accent-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      className="flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-primary/40 bg-accent px-3 py-2 text-sm font-medium text-accent-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:min-h-10 sm:flex-none"
     >
       <Coffee className="size-4" aria-hidden="true" />
       <span className="hidden sm:inline">{copy.coffee}</span>
