@@ -6,8 +6,7 @@
 
 [![Status](https://img.shields.io/badge/status-active--development-brightgreen)](https://github.com/Bermartos/k6builder)
 [![k6 Compatibility](https://img.shields.io/badge/k6-compatible-7d64ff)](https://k6.io/)
-[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC_BY--NC_4.0-orange.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 <br />
 
 </div>
