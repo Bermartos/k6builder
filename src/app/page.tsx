@@ -8,6 +8,7 @@ import { SettingsPanel } from '@/components/settings-panel'
 import { ScriptPreview } from '@/components/script-preview'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CoffeeButton, LanguageSwitcher, useLanguage } from '@/components/language-switcher'
+import { SiteFooter } from '@/components/site-footer'
 import { generateK6Script, type BuilderConfig } from '@/lib/generate-k6-script'
 import { parseCurl } from '@/lib/curl'
 import { parsePostman, type ParsedCollection } from '@/lib/postman'
@@ -92,7 +93,8 @@ export default function Page() {
   const requestCount = collection?.requests.length ?? 0
 
   return (
-    <main className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 md:px-8 md:py-12 lg:px-12">
+    <div className="flex min-h-screen flex-col">
+    <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-8 md:px-8 md:py-12 lg:px-12">
       <header className="flex items-start justify-between gap-4 pb-2">
         <div className="flex flex-col gap-3">
           <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-primary">
@@ -140,5 +142,7 @@ export default function Page() {
         </p>
       </div>
     </main>
+    <SiteFooter />
+    </div>
   )
 }
