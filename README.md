@@ -1,16 +1,57 @@
-# k6builder
-K6Builder 🚀
-English | Español
+<div align="center">
 
-English
-A fast, lightweight, and zero-friction web tool designed to generate ready-to-use Grafana k6 load testing scripts instantly.
+# ⚡ K6Builder
 
-Why K6Builder?
-While official suites and enterprise tools are often bloated with heavy desktop installations, complex onboarding, or mandatory cloud logins, K6Builder is built for developers and QA engineers who just want to convert their API requests or data structures into a clean, working k6 script in under 5 seconds.
+**The zero-friction web tool to visually design load patterns and instantly generate Grafana k6 scripts.**
 
-Key Features
-Instant Script Generation: Quickly structure your test code without messing around with manual boilerplate syntax.
+[![Status](https://img.shields.io/badge/status-active--development-brightgreen)](https://github.com/Bermartos/k6builder)
+[![k6 Compatibility](https://img.shields.io/badge/k6-compatible-7d64ff)](https://k6.io/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Target Audience: Backend developers, DevOps engineers, and QA automation specialists looking to speed up performance testing workflows.
+<br />
 
-Clean Code Structure: Generates modular scripts following best practices for k6.
+</div>
+
+---
+
+## 🎯 What is K6Builder?
+
+Setting up performance tests shouldn't require manual boilerplate coding, wrestling with CLI parameters, or paying for heavy enterprise platforms just to map a simple load profile.
+
+**K6Builder** is a fast, lightweight, browser-based utility built to bridge the gap between HTTP requests (cURL, Postman) and executable **Grafana k6** scripts. It allows developers and QA engineers to configure traffic stages visually and export clean, production-ready JavaScript in under 5 seconds.
+
+---
+
+## 👥 Who is it for?
+
+* **Backend Developers** who want to sanity-check API endpoints without fighting k6 syntax.
+* **QA & Performance Engineers** needing a quick way to draft test scenarios and custom ramp-up patterns.
+* **DevOps Teams** looking for a standardized, clean starting point for their load testing scripts in CI/CD pipelines.
+
+---
+
+## ✨ Key Features
+
+- **Visual Scenario & Ramp Designer:** Define ramp-ups, plateaus, and ramp-downs visually—no manual `stages` array editing required.
+- **Instant Code Export:** Generates clean, idiomatic k6 JavaScript code instantly in your browser.
+- **Zero-Friction Workflow:** No desktop software installation, no mandatory sign-ups, no bloat.
+- **cURL / Postman Support:** Convert standard API calls directly into modular k6 request blocks.
+
+---
+
+## 🚀 Roadmap & Upcoming Features
+
+We are actively developing and improving **K6Builder**. Here is what is cooking:
+
+- [x] Visual ramp-up load configuration
+- [x] Postman and cURL source support
+- [x] Instant JS export with clean ES6 k6 options
+- [ ] Custom HTTP headers and authorization builder
+- [ ] Thresholds & checks visual configurator
+- [ ] Export directly to k6 Cloud / Grafana dashboards
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ for the performance engineering community.</sub>
+</div>
