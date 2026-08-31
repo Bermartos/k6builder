@@ -14,8 +14,7 @@ import { parseCurl } from '@/lib/curl'
 import { parsePostman, type ParsedCollection } from '@/lib/postman'
 
 export default function Page() {
-  const { language } = useLanguage()
-  const isSpanish = language === 'es'
+  const { language, t } = useLanguage()
 
   const [config, setConfig] = useState<BuilderConfig>({
     source: 'postman',
@@ -70,9 +69,7 @@ export default function Page() {
 
       if (!parsed) {
         setCollection(null)
-        setError(
-          `El análisis automático está disponible para Postman y cURL. Con "${config.source}" se usará la colección de ejemplo.`,
-        )
+        setError(t.parseUnavailable(config.source))
         setHasGenerated(true)
         return
       }
@@ -81,7 +78,7 @@ export default function Page() {
       setHasGenerated(true)
     } catch (err) {
       setCollection(null)
-      setError(err instanceof Error ? err.message : 'No se pudo leer el archivo como JSON válido.')
+      setError(err instanceof Error ? err.message : t.invalidJson)
     }
   }
 
@@ -102,10 +99,10 @@ export default function Page() {
             k6 Script Builder
           </span>
           <h1 className="text-3xl font-semibold tracking-tight text-balance md:text-4xl">
-            {isSpanish ? 'De tu colección de APIs a una prueba de carga ejecutable' : 'From your API collection to an executable load test'}
+            {t.heroTitle}
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
-            {isSpanish ? 'Importa Postman o cURL, define el perfil de carga y obtén un script de k6 listo para' : 'Import Postman or cURL, define the load profile, and get a k6 script ready for'}
+            {t.heroDescription}
             <span className="font-mono"> k6 run load-test.js</span>.
           </p>
         </div>
@@ -117,8 +114,9 @@ export default function Page() {
       </header>
 
       <div className="flex flex-col gap-6">
-        <SectionShell step="01" title={isSpanish ? 'Origen' : 'Source'} hint={isSpanish ? 'Elige el formato e importa el archivo' : 'Choose a format and import your file'}>
+        <SectionShell step="01" title={t.sourceTitle} hint={t.sourceHint}>
           <SourcePanel
+            language={language}
             source={config.source}
             onSourceChange={(source) => patch({ source })}
             fileName={config.fileName}
@@ -127,18 +125,18 @@ export default function Page() {
           />
         </SectionShell>
 
-        <SectionShell step="02" title={isSpanish ? 'Perfil de carga' : 'Load profile'} hint={isSpanish ? 'Concurrencia, tiempos y opciones del script' : 'Concurrency, timing, and script options'}>
-          <SettingsPanel config={config} onChange={patch} />
+        <SectionShell step="02" title={t.loadProfileTitle} hint={t.loadProfileHint}>
+          <SettingsPanel language={language} config={config} onChange={patch} />
         </SectionShell>
 
-        <SectionShell step="03" title={isSpanish ? 'Script' : 'Script'} hint={isSpanish ? 'Genera, revisa y exporta' : 'Generate, review, and export'}>
-          <ScriptPreview script={script} disabled={false} onGenerate={handleGenerate} />
+        <SectionShell step="03" title={t.scriptTitle} hint={t.scriptHint}>
+          <ScriptPreview language={language} script={script} disabled={false} onGenerate={handleGenerate} />
         </SectionShell>
 
         <p className="px-1 text-xs leading-relaxed text-muted-foreground">
           {collection
-            ? `${collection.name}: ${requestCount} solicitud(es) · ${config.vus} VUs · rampa ${config.rampUp}s · total ${config.duration}s`
-            : `Sin archivo: se usará la colección de ejemplo · ${config.vus} VUs · rampa ${config.rampUp}s · total ${config.duration}s`}
+            ? t.summaryWithFile(collection.name, requestCount, config.vus, config.rampUp, config.duration)
+            : t.summaryWithoutFile(config.vus, config.rampUp, config.duration)}
         </p>
       </div>
     </main>

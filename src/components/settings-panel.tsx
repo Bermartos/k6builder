@@ -2,16 +2,21 @@
 
 import { Check } from 'lucide-react'
 import type { BuilderConfig } from '@/lib/generate-k6-script'
+import { dictionary, type Language } from '@/lib/i18n'
 
 type Toggle = 'checks200' | 'thinkTime' | 'authTokens'
 
-const TOGGLES: { id: Toggle; label: string; hint: string }[] = [
-  { id: 'checks200', label: 'Checks 200', hint: 'Valida status y latencia de cada request' },
-  { id: 'thinkTime', label: 'Think Time', hint: 'Inserta sleep() aleatorio entre pasos' },
-  { id: 'authTokens', label: 'Auth Tokens', hint: 'Login en setup() y Bearer en headers' },
-]
-
-function LoadCurve({ vus, rampUp, duration }: { vus: number; rampUp: number; duration: number }) {
+function LoadCurve({
+  vus,
+  rampUp,
+  duration,
+  t,
+}: {
+  vus: number
+  rampUp: number
+  duration: number
+  t: (typeof dictionary)['en']
+}) {
   const total = Math.max(duration, rampUp * 2 + 1)
   const up = (rampUp / total) * 100
   const down = 100 - up
@@ -21,7 +26,7 @@ function LoadCurve({ vus, rampUp, duration }: { vus: number; rampUp: number; dur
     <div className="rounded-lg border border-border bg-muted/40 p-4">
       <div className="flex items-baseline justify-between">
         <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-          Perfil de carga
+          {t.loadProfileChartLabel}
         </span>
         <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
           {rampUp}s ↑ · {Math.max(duration - rampUp * 2, 0)}s → · {rampUp}s ↓
@@ -38,27 +43,34 @@ function LoadCurve({ vus, rampUp, duration }: { vus: number; rampUp: number; dur
           transform="scale(1,0.4)"
         />
       </svg>
-      <p className="sr-only">
-        Rampa de {rampUp} segundos hasta {vus} usuarios virtuales, meseta y descenso, en {duration} segundos totales.
-      </p>
+      <p className="sr-only">{t.loadCurveSr(rampUp, vus, duration)}</p>
     </div>
   )
 }
 
 export function SettingsPanel({
+  language,
   config,
   onChange,
 }: {
+  language: Language
   config: BuilderConfig
   onChange: (patch: Partial<BuilderConfig>) => void
 }) {
+  const t = dictionary[language]
+  const TOGGLES: { id: Toggle; label: string; hint: string }[] = [
+    { id: 'checks200', label: t.checks200Label, hint: t.checks200Hint },
+    { id: 'thinkTime', label: t.thinkTimeLabel, hint: t.thinkTimeHint },
+    { id: 'authTokens', label: t.authTokensLabel, hint: t.authTokensHint },
+  ]
+
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-6 md:grid-cols-2">
         <div className="flex flex-col gap-4">
           <div className="flex items-end justify-between gap-4">
             <label htmlFor="vus" className="text-sm font-medium">
-              Usuarios virtuales (VUs)
+              {t.vusLabel}
             </label>
             <output
               htmlFor="vus"
@@ -86,7 +98,7 @@ export function SettingsPanel({
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
               <label htmlFor="ramp" className="text-sm font-medium">
-                Rampa (s)
+                {t.rampLabel}
               </label>
               <input
                 id="ramp"
@@ -100,7 +112,7 @@ export function SettingsPanel({
             </div>
             <div className="flex flex-col gap-1.5">
               <label htmlFor="duration" className="text-sm font-medium">
-                Duración total (s)
+                {t.durationLabel}
               </label>
               <input
                 id="duration"
@@ -115,12 +127,12 @@ export function SettingsPanel({
           </div>
         </div>
 
-        <LoadCurve vus={config.vus} rampUp={config.rampUp} duration={config.duration} />
+        <LoadCurve vus={config.vus} rampUp={config.rampUp} duration={config.duration} t={t} />
       </div>
 
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-          Configuración del script
+          {t.scriptConfigLegend}
         </legend>
         <div className="grid gap-2 sm:grid-cols-3">
           {TOGGLES.map((toggle) => {

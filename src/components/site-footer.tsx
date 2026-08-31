@@ -4,15 +4,14 @@ import { ExternalLink, GitBranch } from 'lucide-react'
 import { useLanguage } from '@/components/language-switcher'
 
 export function SiteFooter() {
-  const { language } = useLanguage()
-  const isSpanish = language === 'es'
+  const { t } = useLanguage()
 
   return (
     <footer className="mx-auto flex w-full max-w-7xl flex-col gap-3 border-t border-border px-4 py-6 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between md:px-8 lg:px-12">
       <p className="leading-relaxed">
-        k6 Builder — {isSpanish ? 'Generador de scripts de carga para Grafana k6' : 'Grafana k6 load testing script generator'}
+        k6 Builder — {t.footerTagline}
       </p>
-      <nav aria-label={isSpanish ? 'Enlaces externos' : 'External links'} className="flex items-center gap-4">
+      <nav aria-label={t.externalLinksLabel} className="flex items-center gap-4">
         <a
           href="https://github.com/Bermartos/k6builder"
           target="_blank"

@@ -3,29 +3,33 @@
 import { useRef, useState } from 'react'
 import { AlertCircle, ClipboardPaste, FileJson, Upload, X } from 'lucide-react'
 import type { SourceType } from '@/lib/generate-k6-script'
-
-const TABS: { id: SourceType; label: string; accept: string; note: string }[] = [
-  { id: 'postman', label: 'Postman', accept: '.json', note: 'collection.json v2.1' },
-  { id: 'curl', label: 'cURL', accept: '.txt,.sh', note: 'comandos sin procesar' },
-]
+import { dictionary, type Language } from '@/lib/i18n'
 
 export function SourcePanel({
+  language,
   source,
   onSourceChange,
   fileName,
   onFileChange,
   error,
 }: {
+  language: Language
   source: SourceType
   onSourceChange: (s: SourceType) => void
   fileName: string | null
   onFileChange: (payload: { name: string; content: string; error?: string } | null) => void
   error?: string | null
 }) {
+  const t = dictionary[language]
+  const TABS: { id: SourceType; label: string; accept: string; note: string }[] = [
+    { id: 'postman', label: t.postmanLabel, accept: '.json', note: t.postmanNote },
+    { id: 'curl', label: t.curlLabel, accept: '.txt,.sh', note: t.curlNote },
+  ]
+
   const [dragging, setDragging] = useState(false)
   const [curlText, setCurlText] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
-  const active = TABS.find((t) => t.id === source) ?? TABS[0]
+  const active = TABS.find((tab) => tab.id === source) ?? TABS[0]
 
   // Lectura 100% en el navegador con la API FileReader. El contenido nunca
   // sale del cliente: se entrega al estado local de React vía onFileChange.
@@ -33,7 +37,7 @@ export function SourcePanel({
 
   const readFile = (file: File) => {
     if (file.size > MAX_BYTES) {
-      onFileChange({ name: file.name, content: '', error: 'El archivo supera el máximo de 10 MB.' })
+      onFileChange({ name: file.name, content: '', error: t.fileTooLarge })
       return
     }
 
@@ -45,7 +49,7 @@ export function SourcePanel({
     }
     reader.onerror = () => {
       console.log('[v0] FileReader error:', reader.error)
-      onFileChange({ name: file.name, content: '', error: 'No se pudo leer el archivo en el navegador.' })
+      onFileChange({ name: file.name, content: '', error: t.fileReadError })
     }
     reader.readAsText(file)
   }
@@ -54,7 +58,7 @@ export function SourcePanel({
     <div className="flex flex-col gap-5">
       <div
         role="tablist"
-        aria-label="Tipo de archivo de origen"
+        aria-label={t.sourceTabsLabel}
         className="grid grid-cols-2 gap-1 rounded-lg bg-muted p-1"
       >
         {TABS.map((tab) => {
@@ -86,7 +90,7 @@ export function SourcePanel({
           <div className="min-w-0 flex-1">
             <p className="truncate font-mono text-sm">{fileName}</p>
             <p className="text-xs text-muted-foreground">
-              {error ? 'No se pudo analizar' : 'Analizado correctamente'} · {active.label} · {active.note}
+              {error ? t.parseFailed : t.parseSuccess} · {active.label} · {active.note}
             </p>
           </div>
           <button
@@ -95,7 +99,7 @@ export function SourcePanel({
             className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-card hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             <X className="size-4" aria-hidden="true" />
-            <span className="sr-only">Quitar archivo</span>
+            <span className="sr-only">{t.removeFile}</span>
           </button>
         </div>
       ) : (
@@ -131,7 +135,7 @@ export function SourcePanel({
             <div className="mx-auto flex max-w-2xl flex-col gap-3 text-left">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <ClipboardPaste className="size-4 text-primary" aria-hidden="true" />
-                <label htmlFor="curl-input">Pega tu comando cURL</label>
+                <label htmlFor="curl-input">{t.pasteCurlLabel}</label>
               </div>
               <textarea
                 id="curl-input"
@@ -145,20 +149,18 @@ export function SourcePanel({
                     onFileChange(null)
                   }
                 }}
-                placeholder={'curl --request GET \\\n  --url https://api.example.com/items'}
+                placeholder={t.curlPlaceholder}
                 rows={5}
                 spellCheck={false}
                 className="w-full resize-y rounded-md border border-input bg-card px-3 py-2 font-mono text-xs leading-relaxed outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
               />
-              <p className="text-xs text-muted-foreground">Pega uno o varios comandos, o arrastra/sube un archivo .txt o .sh.</p>
+              <p className="text-xs text-muted-foreground">{t.curlHelp}</p>
             </div>
           ) : (
             <>
               <Upload className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
-              <p className="mt-3 text-sm text-pretty">
-                Arrastra tu archivo <span className="font-mono">{active.accept}</span> aquí
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground">Máx. 10 MB · {active.note}</p>
+              <p className="mt-3 text-sm text-pretty">{t.dragFile(active.accept)}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t.maxSize(active.note)}</p>
             </> 
           )}
           <button
@@ -166,7 +168,7 @@ export function SourcePanel({
             onClick={() => inputRef.current?.click()}
             className="mt-4 rounded-md border border-input bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
-            Seleccionar archivo
+            {t.selectFile}
           </button>
         </div>
       )}
