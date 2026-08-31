@@ -118,6 +118,10 @@ export default function RootLayout({
       className={`bg-background ${inter.variable} ${jetbrains.variable}`}
     >
       <head>
+        <meta
+          name="google-site-verification"
+          content="_74hOs1_QqZ6j_4baUjY8dVNC4i2YtWDxvL8cKZdlUQ"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
