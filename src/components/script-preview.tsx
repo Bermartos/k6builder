@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from 'react'
 import { Check, Copy, Download, Terminal } from 'lucide-react'
+import { dictionary, type Language } from '@/lib/i18n'
 
 const TOKEN =
   /(\/\/[^\n]*)|('(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|"(?:[^"\\]|\\.)*")|\b(import|from|export|const|function|return|default|new|let|of)\b|\b(\d+(?:\.\d+)?)\b/g
@@ -49,14 +50,17 @@ function highlight(line: string) {
 }
 
 export function ScriptPreview({
+  language,
   script,
   onGenerate,
   disabled,
 }: {
+  language: Language
   script: string | null
   onGenerate: () => void
   disabled: boolean
 }) {
+  const t = dictionary[language]
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -92,7 +96,7 @@ export function ScriptPreview({
         className="group flex w-full items-center justify-center gap-2.5 rounded-lg bg-primary px-6 py-4 text-base font-semibold text-primary-foreground transition-[transform,background-color] hover:brightness-110 active:scale-[0.995] disabled:pointer-events-none disabled:opacity-45 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
         <Terminal className="size-5" aria-hidden="true" />
-        Generar Script de k6
+        {t.generateButton}
       </button>
 
       <div className="overflow-hidden rounded-lg bg-code">
@@ -106,7 +110,7 @@ export function ScriptPreview({
               className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-code-muted transition-colors hover:bg-white/10 hover:text-code-foreground disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {copied ? <Check className="size-3.5" aria-hidden="true" /> : <Copy className="size-3.5" aria-hidden="true" />}
-              {copied ? 'Copiado' : 'Copiar'}
+              {copied ? t.copied : t.copy}
             </button>
             <button
               type="button"
@@ -115,7 +119,7 @@ export function ScriptPreview({
               className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-code-muted transition-colors hover:bg-white/10 hover:text-code-foreground disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <Download className="size-3.5" aria-hidden="true" />
-              Descargar
+              {t.download}
             </button>
           </span>
         </div>
@@ -138,9 +142,9 @@ export function ScriptPreview({
           </pre>
         ) : (
           <div className="flex min-h-56 flex-col items-center justify-center gap-2 px-6 py-14 text-center">
-            <p className="font-mono text-sm text-code-foreground">Sin script todavía</p>
+            <p className="font-mono text-sm text-code-foreground">{t.noScriptYet}</p>
             <p className="max-w-xs text-sm leading-relaxed text-code-muted text-pretty">
-              Sube un archivo de origen y ajusta la carga. La previsualización aparecerá aquí.
+              {t.noScriptHint}
             </p>
           </div>
         )}

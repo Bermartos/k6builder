@@ -2,19 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Languages, Coffee } from 'lucide-react'
-
-type Language = 'es' | 'en'
-
-const copy = {
-  es: {
-    toggle: 'English',
-    coffee: 'Invítame a un café',
-  },
-  en: {
-    toggle: 'Español',
-    coffee: 'Buy me a Coffee',
-  },
-} as const
+import { dictionary, type Language } from '@/lib/i18n'
 
 export function useLanguage() {
   const [language, setLanguage] = useState<Language>('en')
@@ -36,11 +24,11 @@ export function useLanguage() {
     setLanguage(next)
   }
 
-  return { language, toggleLanguage, copy: copy[language] }
+  return { language, toggleLanguage, t: dictionary[language] }
 }
 
 export function LanguageSwitcher() {
-  const { language, toggleLanguage, copy } = useLanguage()
+  const { language, toggleLanguage, t } = useLanguage()
   const nextLanguage = language === 'es' ? 'English' : 'Español'
 
   return (
@@ -52,13 +40,13 @@ export function LanguageSwitcher() {
       className="flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-input bg-card px-3 py-2 font-mono text-[11px] uppercase tracking-wider transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:min-h-10 sm:flex-none sm:px-3 sm:text-xs"
     >
       <Languages className="size-4" aria-hidden="true" />
-      {copy.toggle}
+      {t.toggle}
     </button>
   )
 }
 
 export function CoffeeButton() {
-  const { copy } = useLanguage()
+  const { t } = useLanguage()
   return (
     <a
       href="https://buymeacoffee.com/bermartosy"
@@ -67,8 +55,8 @@ export function CoffeeButton() {
       className="flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 rounded-md border border-primary/40 bg-accent px-3 py-2 text-sm font-medium text-accent-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:min-h-10 sm:flex-none"
     >
       <Coffee className="size-4" aria-hidden="true" />
-      <span className="hidden sm:inline">{copy.coffee}</span>
-      <span className="sm:hidden">Coffee</span>
+      <span className="hidden sm:inline">{t.coffee}</span>
+      <span className="sm:hidden">{t.coffeeShort}</span>
     </a>
   )
 }
