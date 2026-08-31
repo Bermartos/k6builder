@@ -1,53 +1,9 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { Check, Copy, Download, Terminal } from 'lucide-react'
 import { dictionary, type Language } from '@/lib/i18n'
-
-const TOKEN =
-  /(\/\/[^\n]*)|('(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`|"(?:[^"\\]|\\.)*")|\b(import|from|export|const|function|return|default|new|let|of)\b|\b(\d+(?:\.\d+)?)\b/g
-
-function highlight(line: string) {
-  const nodes: React.ReactNode[] = []
-  let last = 0
-  let match: RegExpExecArray | null
-  TOKEN.lastIndex = 0
-
-  while ((match = TOKEN.exec(line)) !== null) {
-    if (match.index > last) nodes.push(line.slice(last, match.index))
-    const [full, comment, str, keyword, num] = match
-    const key = `${match.index}-${full.length}`
-    if (comment) {
-      nodes.push(
-        <span key={key} className="text-code-muted italic">
-          {full}
-        </span>,
-      )
-    } else if (str) {
-      nodes.push(
-        <span key={key} className="text-code-string">
-          {full}
-        </span>,
-      )
-    } else if (keyword) {
-      nodes.push(
-        <span key={key} className="text-code-key">
-          {full}
-        </span>,
-      )
-    } else if (num) {
-      nodes.push(
-        <span key={key} className="text-code-string">
-          {full}
-        </span>,
-      )
-    }
-    last = match.index + full.length
-  }
-  if (last < line.length) nodes.push(line.slice(last))
-
-  return nodes.map((node, i) => <Fragment key={i}>{node}</Fragment>)
-}
+import { CodeLines } from '@/lib/highlight-code'
 
 export function ScriptPreview({
   language,
@@ -84,8 +40,6 @@ export function ScriptPreview({
     a.click()
     URL.revokeObjectURL(url)
   }
-
-  const lines = script ? script.split('\n') : []
 
   return (
     <div className="flex flex-col gap-5">
@@ -129,16 +83,7 @@ export function ScriptPreview({
             aria-live="polite"
             className="max-h-96 overflow-auto p-4 font-mono text-[13px] leading-6 text-code-foreground"
           >
-            <code>
-              {lines.map((line, i) => (
-                <span key={i} className="flex gap-4">
-                  <span className="w-6 shrink-0 select-none text-right text-code-muted/60 tabular-nums">
-                    {i + 1}
-                  </span>
-                  <span className="min-w-0 whitespace-pre-wrap">{highlight(line) as React.ReactNode}</span>
-                </span>
-              ))}
-            </code>
+            <CodeLines code={script} />
           </pre>
         ) : (
           <div className="flex min-h-56 flex-col items-center justify-center gap-2 px-6 py-14 text-center">

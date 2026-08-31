@@ -64,6 +64,23 @@ export const dictionary = {
     // Footer
     footerTagline: 'Generador de scripts de carga para Grafana k6',
     externalLinksLabel: 'Enlaces externos',
+    // Editor IDE page
+    editorBadge: 'Editor IDE',
+    editorNavGenerator: 'Generador',
+    editorNavEditor: 'Editor',
+    editorNavGithub: 'GitHub',
+    editorBackButton: 'Volver al Builder simple',
+    editorSidebarLabel: 'Explorador de archivos',
+    editorNewFile: 'Nuevo archivo',
+    editorNewFileTitle: 'Disponible próximamente',
+    editorBreadcrumbLabel: 'Ruta del archivo',
+    editorCopyCode: 'Copiar código',
+    editorDownloadZip: 'Descargar ZIP',
+    editorZipping: 'Empaquetando…',
+    editorHeroKicker: 'Vista previa · próximamente',
+    editorHeroTitle: 'Editor visual de scripts, en construcción',
+    editorHeroDescription:
+      'Estamos diseñando un editor tipo IDE para construir tus scripts de k6 en varios archivos, con autocompletado y previsualización en vivo.',
   },
   en: {
     toggle: 'Español',
@@ -121,6 +138,23 @@ export const dictionary = {
     noScriptHint: 'Upload a source file and adjust the load. The preview will appear here.',
     footerTagline: 'Grafana k6 load testing script generator',
     externalLinksLabel: 'External links',
+    // Editor IDE page
+    editorBadge: 'IDE Editor',
+    editorNavGenerator: 'Generator',
+    editorNavEditor: 'Editor',
+    editorNavGithub: 'GitHub',
+    editorBackButton: 'Back to Simple Builder',
+    editorSidebarLabel: 'File Explorer',
+    editorNewFile: 'New File',
+    editorNewFileTitle: 'Coming soon',
+    editorBreadcrumbLabel: 'File path',
+    editorCopyCode: 'Copy Code',
+    editorDownloadZip: 'Download ZIP',
+    editorZipping: 'Zipping…',
+    editorHeroKicker: 'Preview · coming soon',
+    editorHeroTitle: 'Visual script editor, under construction',
+    editorHeroDescription:
+      "We're designing an IDE-style editor to build your k6 scripts across multiple files, with autocomplete and a live preview.",
   },
 } as const
 

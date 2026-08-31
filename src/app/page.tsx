@@ -94,10 +94,18 @@ export default function Page() {
     <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 px-4 py-8 md:px-8 md:py-12 lg:px-12">
       <header className="flex flex-col gap-4 pb-2 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 flex flex-col gap-3">
-          <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-primary">
-            <Activity className="size-4" aria-hidden="true" />
-            k6 Script Builder
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-primary">
+              <Activity className="size-4" aria-hidden="true" />
+              k6 Script Builder
+            </span>
+            <Link
+              href="/editor"
+              className="rounded-full border border-border px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              {t.editorBadge}
+            </Link>
+          </div>
           <h1 className="text-3xl font-semibold tracking-tight text-balance md:text-4xl">
             {t.heroTitle}
           </h1>
